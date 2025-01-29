@@ -9,7 +9,7 @@ def get_char(url: str):
     response = requests.get(url)
     if response.status_code == 200:
         response_data = json.loads(response.text)
-    return None
+    return response_data
 
 
 def guess_char():
@@ -25,16 +25,16 @@ def guess_char():
             continue
 
         config = get_config()
-        character = get_char(config[f"{'url2'}/{user_choice}"])
+        character = get_char(config['url2'] + f"/{user_choice}")
 
-        alias = character.get("aliases", [""])[0]
-        titles = character.get("titles", [])
-        name = character.get("name", "")
+        aliases = character.get("aliases")
+        titles = character.get("titles")
+        name = character.get("name")
 
-        if alias and alias != "":
-            print(f"Alias: {alias}")
-        elif titles:
-            print(f"Title: {titles[0]}")
+        if len(name) > 0 and len(aliases) > 0:
+            print(f"Alias: {aliases}")
+        elif len(titles) > 0:
+            print(f"Title: {titles}")
         else:
             print("Enter another number.")
             continue
